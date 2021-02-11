@@ -1,0 +1,333 @@
+swagger: "2.0"
+info:
+  description: "This is an API to relate plates and restaurant"
+  version: 1.0.0
+  title: "FoodMakrAPI"
+  # put the contact info for your development or API team
+  contact:
+    email: "victorgranero.vgg@gmail.com"
+
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+host: aiss-1920-foodmakr.appspot.com
+basePath: /api
+
+# tags are used for organizing operations
+tags:
+  - name: "dish"
+    description: "Information about dishes"
+  - name: "restaurant"
+    description: "Information about dishes"
+schemes:
+  - "https"
+paths:
+  "/dish":
+    get:
+      tags:
+      - "dish"
+      summary: "Returns a list of dishes from the database of the application."
+      operationId: "getAll"
+      description: "Returns a list of dishes from the database of the application."
+      produces:
+      - "application/json"
+      parameters: 
+          - in: "query"
+            name: "Order"
+            description: "name (alphabetical order), -name (reversed alphabetical order), type (order by dish types) or -type (reversed order)"
+            type: "string"
+            
+      responses:
+        200:
+          description: "List of dishes"
+          schema:
+              type: "array"
+              items:
+                $ref: "#/definitions/Dish"
+        404:
+          description: "No results"
+          
+    post:
+        tags:
+        - "dish"
+        summary: "Creates a new dish."
+        operationId: "addDish"
+        description: "Creates a new dish."
+        consumes:
+            - "application/json"
+        produces:
+            - "application/json"
+        parameters:
+            - in: "body"
+              name: "d"
+              description: "Dish to add"
+              schema:
+                $ref: '#/definitions/Dish'
+        responses:
+            201:
+                description: "dish created"
+            400:
+                description: "invalid input, object invalid"
+            
+    put:
+      tags:
+      - "dish"
+      summary: "Updates a dish."
+      operationId: "updateDish"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "Dish"
+          description: "Dish parameters"
+          required: true
+          schema:
+            $ref: "#/definitions/Dish"
+      responses:
+        204:
+          description: "Dish uptade"
+        400:
+          description: "Incorrect petition"
+        404:
+          description: "Dish not found"
+          
+  "/dish/{id}":
+    get:
+      tags:
+      - "dish"
+      summary: "Returns the dish with the given id."
+      operationId: "get"
+      produces:
+      - "application/json"
+      parameters: 
+        - in: "path"
+          name: "id"
+          description: "ID of a dish"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Dish of ID"
+          schema:
+            $ref: "#/definitions/Dish"
+        404:
+          description: "No dish with such ID"
+
+    delete:
+        tags:
+        - "dish"
+        summary: "Deletes the given dish."
+        operationId: "removeDish"
+        consumes:
+        - "application/json"
+        parameters:
+            - in: "path"
+              name: "id"
+              description: "Dish ID"
+              required: true
+              type: "string"
+        responses:
+            204:
+                description: "Dish eliminated"
+            404:
+                description: "Dish not found"
+        
+  "/restaurant":
+    get:
+      tags:
+      - "restaurant"
+      summary: "Returns a list of restaurants from the database of the application."
+      operationId: "getAll"
+      description: "Returns a list of restaurants from the database of the application."
+      produces:
+      - "application/json"
+      parameters: 
+          - in: "query"
+            name: "Order"
+            description: "Order by: name (alphabetical order) or -name (reversed alphabetical order)"
+            type: "string"
+            
+
+      responses:
+        200:
+          description: "List of dishes"
+          schema:
+              type: "array"
+              items:
+                $ref: "#/definitions/Restaurant"
+        404:
+          description: "bad input parameter"
+
+    post:
+      tags:
+      - "restaurant"
+      summary: "Creates a new restaurant."
+      operationId: "addRestaurant"
+      description: "Creates a new restaurant."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "r"
+        description: "Restaurant to add"
+        schema:
+          $ref: "#/definitions/Restaurant"
+      responses:
+        201:
+          description: "restaurant created"
+        400:
+          description: "invalid input, object invalid"
+
+    put:
+      tags:
+      - "restaurant"
+      summary: "Uptade a restaurant."
+      operationId: "updateRestaurant"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "r"
+          description: "Restaurant"
+          required: true
+          schema:
+            $ref: "#/definitions/Restaurant"
+      responses:
+        204:
+          description: "Restaurant updated"
+        400:
+          description: "Incorrect petition"
+        404:
+          description: "Restaurant not found"
+  "/restaurant/{id}":
+    get:
+      tags:
+      - "restaurant"
+      summary: "Returns the restaurant with the given id."
+      operationId: "get"
+      description: "Returns the restaurant with the given id."
+      produces:
+      - "application/json"
+      parameters: 
+        - name: "id"
+          in: "path"
+          description: "ID of a restaurant"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Restaurant of ID"
+          schema:
+            $ref: "#/definitions/Restaurant"
+        404:
+          description: "No restaurant with such ID"
+
+    delete:
+        tags:
+        - "restaurant"
+        summary: "Deletes the given restaurant."
+        operationId: "removeRestaurant"
+        consumes:
+        - "application/json"
+        parameters:
+            - in: "path"
+              name: "id"
+              description: "Restaurant ID"
+              required: true
+              type: "string"
+        responses:
+            204:
+                description: "Restaurant eliminated"
+            404:
+                description: "Restaurant not found"
+  "/restaurant/{restaurantId}/{dishId}":
+    post:
+      tags:
+      - "restaurant"
+      summary: "Adds the given dish to the given restaurant."
+      operationId: "addDishToRestaurant"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "restaurantId"
+          description: "Restaurant ID"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "dishId"
+          description: "Dish ID"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: "Dish added"
+          schema:
+              $ref: "#/definitions/Restaurant"
+        400:
+          description: "Incorrect petition"
+    delete:
+      tags:
+      - "restaurant"
+      summary: "Deletes the given dish from the given restaurant."
+      operationId: "removeDishFromRestaurant"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "rId"
+          description: "Restaurant ID"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "dId"
+          description: "Dish ID"
+          required: true
+          type: "string"
+      responses:
+        204:
+          description: "Dish eliminated"
+        404:
+          description: "Dish or restaurant not found" 
+    
+definitions:
+  Dish:
+    required:
+    - id
+    - name
+    - type
+    properties:
+      id:
+        type: string
+        example: d1
+      name:
+        type: string
+        example: Chicken
+      type:
+        type: string
+        example: tapa
+  Restaurant:
+    required:
+    - id
+    - name
+    - description
+    - Dish
+    properties:
+      id:
+        type: string
+        example: r1
+      name:
+        type: string
+        example: Casa Aiss
+      description:
+        type: string
+        example: A good restaurant
+      Dish:
+        type: array
+        items:
+          $ref: '#/definitions/Dish'

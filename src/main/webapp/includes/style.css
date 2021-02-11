@@ -1,0 +1,62 @@
+body {
+	background-image: url(../images/background.jpg);
+	background-color: #cccccc;
+	background-repeat: no-repeat;
+	background-size: cover;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+h1 {
+	text-align: center;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 80px;
+	color: white;
+}
+
+h3 {
+	text-align: center;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 30px;
+	color: white;
+}
+
+fieldset {
+	background-color: #eeeeee;
+	width: 80%;
+	height: 75%;
+	margin: auto;
+}
+
+legend {
+	background-color: #eeeeee;
+}
+
+input[type="text"] {
+	width: 50%;
+	height: 100%;
+	margin: 0 auto;
+}
+
+textarea {
+	width: 100%;
+	height: 200px;
+}
+
+div {
+	margin: auto;
+	width: 50%;
+	padding: 10px;
+	text-align: center;
+}
+
+#pie {
+	padding: 120px;
+	text-align: center;
+	color: black;
+}
+
+img {
+	border: gray 5px solid;
+}

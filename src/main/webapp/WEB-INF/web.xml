@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    
+    <!-- All REST resources will be prefixed by /api -->
+	<context-param>
+		<param-name>resteasy.servlet.mapping.prefix</param-name>
+		<param-value>/api</param-value>
+	</context-param>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>Resteasy</servlet-name>
+		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>aiss.api.FoodMakrApplication</param-value>
+		</init-param>
+	</servlet>
+
+	<!-- Servlet mappings -->
+	<!-- All calls to /api/xxx will be sent to the resteasy servlet -->
+	<servlet-mapping>
+		<servlet-name>Resteasy</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+    
+    <!-- Error page -->
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/error.jsp</location>
+	</error-page>
+	
+    <!-- WEBAPP SERVLETS -->
+    
+    <servlet>
+		<description></description>
+		<display-name>SearchController</display-name>
+		<servlet-name>SearchController</servlet-name>
+		<servlet-class>aiss.controller.SearchController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchController</servlet-name>
+		<url-pattern>/SearchController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description></description>
+		<display-name>MealController</display-name>
+		<servlet-name>MealController</servlet-name>
+		<servlet-class>aiss.controller.MealController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MealController</servlet-name>
+		<url-pattern>/MealController</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>LocationController</servlet-name>
+		<servlet-class>aiss.controller.LocationController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LocationController</servlet-name>
+		<url-pattern>/LocationController</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>GetStartedController</servlet-name>
+		<servlet-class>aiss.controller.GetStartedController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetStartedController</servlet-name>
+		<url-pattern>/GetStartedController</url-pattern>
+	</servlet-mapping>
+	
+	
+    <!-- Google Drive files - retrieve -->
+
+    <!-- Google Drive files - update -->
+    <servlet>
+        <servlet-name>GoogleDriveFileUpdateController</servlet-name>
+        <servlet-class>aiss.controller.GoogleDriveFileUpdateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoogleDriveFileUpdateController</servlet-name>
+        <url-pattern>/googleDriveFileUpdate</url-pattern>
+    </servlet-mapping>
+    <!-- Google Drive files - create -->
+    <servlet>
+        <servlet-name>GoogleDriveFileNewController</servlet-name>
+        <servlet-class>aiss.controller.GoogleDriveFileNewController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoogleDriveFileNewController</servlet-name>
+        <url-pattern>/googleDriveFileNew</url-pattern>
+    </servlet-mapping>
+    <!-- OAUTH SERVLETS 
+    
+      For each OAuth 2.0 service, you need to create two servlets: one for the initiation 
+      and another for the callback. After sucess the token for the provider will be available
+      in the session scope under the name <provider>-token. E.g.: Spotify-token.
+      
+      Those servlets support 2 parameters:
+       - provider: which is mandatory and specifies the configuration from the OAuthConfig.json file which
+      will be applied.
+       - onSuccess: which is optional specifies the behaviour of the servlet after an successful 
+      authorization. If you specify close as the value of the parameter, the page will close. If you
+      specify redirect:XXXX, the page will be redirected to XXXX.  
+      
+      WARNING: The url-patterns of all the servlets mus be disjoint. 
+      Our recommendation is that if you expecify X as the provider, the url-pattern of the 
+      initiation servlet could be	/AuthController/X, and the url-pattern of the callback
+       servlet must be /oauth2callback/X.
+    -->
+
+    
+    <!--   GoogleDrive oAuth2 servlets    -->
+    <!-- GoogleDriveAuthController-->
+    <servlet>
+        <description/>
+        <servlet-name>GoogleDriveAuthController</servlet-name>
+        <servlet-class>aiss.controller.oauth.GenericAuthController</servlet-class>
+        <init-param>
+            <param-name>provider</param-name>
+            <param-value>GoogleDrive</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoogleDriveAuthController</servlet-name>
+        <url-pattern>/AuthController/GoogleDrive</url-pattern>
+    </servlet-mapping>
+    <!--GoogleDriveOAuth2Callback-->
+    <servlet>
+        <description/>
+        <servlet-name>GoogleDriveOAuth2Callback</servlet-name>
+        <servlet-class>aiss.controller.oauth.OAuth2Callback</servlet-class>
+        <init-param>
+            <param-name>provider</param-name>
+            <param-value>GoogleDrive</param-value>
+        </init-param>
+        <init-param>
+            <param-name>onSuccess</param-name>
+            <param-value>redirect:/successUpload.html</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoogleDriveOAuth2Callback</servlet-name>
+        <url-pattern>/oauth2callback/GoogleDrive</url-pattern> 
+    </servlet-mapping>
+</web-app>

@@ -1,0 +1,25 @@
+input[type=text] {
+  width: 200px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 14px;
+  font-size: 16px;
+  background-color: white;
+  padding: 12px 20px 12px 40px;
+  transition: width 0.4s ease-in-out;
+}
+input[type=text]:focus {
+  width: 69%;
+}
+
+input[type=submit] {
+  font-size: 16px;
+  background-color: #752c02;
+  border: 8px;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 16px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
